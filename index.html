@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>D-Day Countdown</title>
+<style>
+:root{
+  --bg:#f4f1ea; --card:#fffdf8; --text:#2f2d29; --muted:#7d776d;
+  --line:#ded7ca; --accent:#8a6d45; --accent2:#eee4d4;
+  --danger:#b45b49; --shadow:0 10px 30px rgba(55,45,25,.08);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",sans-serif;}
+.wrap{width:min(980px,92%);margin:auto;padding:42px 0 60px}
+header{text-align:center;margin-bottom:32px}
+h1{margin:0 0 8px;font-size:clamp(30px,5vw,48px);letter-spacing:-1.8px}
+.today{color:var(--muted);font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-bottom:22px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow)}
+.dday-card{padding:28px;position:relative;overflow:hidden}
+.dday-card:after{content:"";position:absolute;width:130px;height:130px;border-radius:50%;
+  right:-35px;top:-45px;background:var(--accent2)}
+.small{position:relative;color:var(--accent);font-size:13px;font-weight:800;letter-spacing:.4px}
+.event{position:relative;font-size:24px;font-weight:800;margin:9px 0 15px}
+.dday{position:relative;font-size:60px;font-weight:900;letter-spacing:-2px;line-height:1}
+.date{position:relative;color:var(--muted);font-size:14px;margin-top:11px}
+.section{padding:26px}
+.title-row{display:flex;justify-content:space-between;align-items:end;gap:10px;margin-bottom:17px}
+h2{margin:0;font-size:22px;letter-spacing:-.6px}
+.hint{font-size:12px;color:var(--muted)}
+.form{display:grid;grid-template-columns:180px 1fr auto;gap:9px;margin-bottom:16px}
+input{width:100%;padding:12px;border:1px solid var(--line);border-radius:11px;
+  background:#fff;color:var(--text);font-size:14px;outline:none}
+input:focus{border-color:var(--accent)}
+button{border:0;border-radius:11px;padding:12px 16px;background:var(--accent);
+  color:white;font-weight:700;cursor:pointer}
+button:hover{filter:brightness(.96)}
+ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:9px}
+li{display:flex;align-items:center;gap:10px;padding:12px 13px;border:1px solid var(--line);
+  border-radius:12px;background:#fff}
+.link{flex:1;min-width:0}
+.link a{color:var(--text);text-decoration:none;font-weight:700}
+.link a:hover{text-decoration:underline}
+.url{display:block;color:var(--muted);font-size:11px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.del{padding:7px 10px;background:#f3e4df;color:var(--danger);font-size:12px}
+.empty{color:var(--muted);text-align:center;padding:22px 0;font-size:14px}
+.note{margin-top:12px;color:var(--muted);font-size:12px;line-height:1.6}
+@media(max-width:700px){
+  .grid{grid-template-columns:1fr}
+  .form{grid-template-columns:1fr}
+  .dday{font-size:52px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>My D-Day</h1>
+    <div class="today">기준일 · 2026-09-15 · 오늘부터 카운트</div>
+  </header>
+
+  <div class="grid">
+    <section class="card dday-card">
+      <div class="small">D-90</div>
+      <div class="event">최종 리허설</div>
+      <div class="dday" id="d90">D-90</div>
+      <div class="date">2026년 12월 14일</div>
+    </section>
+
+    <section class="card dday-card">
+      <div class="small">D-120</div>
+      <div class="event">공연</div>
+      <div class="dday" id="d120">D-120</div>
+      <div class="date">2027년 01월 13일</div>
+    </section>
+  </div>
+
+  <section class="card section">
+    <div class="title-row">
+      <h2>🎬 재밌게 본 동영상</h2>
+      <div class="hint">제목 + 링크를 저장하세요</div>
+    </div>
+
+    <form class="form" id="videoForm">
+      <input id="videoTitle" type="text" placeholder="간략한 제목" maxlength="100" required>
+      <input id="videoUrl" type="url" placeholder="https://youtu.be/..." required>
+      <button type="submit">추가</button>
+    </form>
+
+    <ul id="videoList"></ul>
+    <div id="empty" class="empty">아직 저장한 동영상이 없습니다.</div>
+    <div class="note">저장한 목록은 이 브라우저의 localStorage에 보관됩니다. 다른 PC나 브라우저와 자동 동기화되지는 않습니다.</div>
+  </section>
+</div>
+
+<script>
+const BASE_DATE = new Date("2026-09-15T00:00:00");
+
+function updateCountdown(id, targetDate) {
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  let diff = Math.ceil((targetDate - today) / 86400000);
+
+  const el = document.getElementById(id);
+  if (diff > 0) el.textContent = "D-" + diff;
+  else if (diff === 0) el.textContent = "D-Day";
+  else el.textContent = "D+" + Math.abs(diff);
+}
+
+const target90 = new Date("2026-12-14T00:00:00");
+const target120 = new Date("2027-01-13T00:00:00");
+updateCountdown("d90", target90);
+updateCountdown("d120", target120);
+
+const KEY = "my-dday-videos-v1";
+let videos = JSON.parse(localStorage.getItem(KEY) || "[]");
+
+function renderVideos() {
+  const list = document.getElementById("videoList");
+  const empty = document.getElementById("empty");
+  list.innerHTML = "";
+  empty.style.display = videos.length ? "none" : "block";
+
+  videos.forEach((video, index) => {
+    const li = document.createElement("li");
+
+    const div = document.createElement("div");
+    div.className = "link";
+
+    const a = document.createElement("a");
+    a.href = video.url;
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    a.textContent = "▶ " + video.title;
+
+    const url = document.createElement("span");
+    url.className = "url";
+    url.textContent = video.url;
+
+    div.appendChild(a);
+    div.appendChild(url);
+
+    const del = document.createElement("button");
+    del.className = "del";
+    del.type = "button";
+    del.textContent = "삭제";
+    del.onclick = () => {
+      videos.splice(index, 1);
+      localStorage.setItem(KEY, JSON.stringify(videos));
+      renderVideos();
+    };
+
+    li.appendChild(div);
+    li.appendChild(del);
+    list.appendChild(li);
+  });
+}
+
+document.getElementById("videoForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const title = document.getElementById("videoTitle").value.trim();
+  let url = document.getElementById("videoUrl").value.trim();
+
+  if (!/^https?:\/\//i.test(url)) url = "https://" + url;
+
+  videos.unshift({
+    title,
+    url,
+    savedAt: new Date().toISOString()
+  });
+
+  localStorage.setItem(KEY, JSON.stringify(videos));
+  e.target.reset();
+  document.getElementById("videoTitle").focus();
+  renderVideos();
+});
+
+renderVideos();
+</script>
+</body>
+</html>
