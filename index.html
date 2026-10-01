@@ -9,51 +9,75 @@
 <title>musicworkers</title>
 <style>
 :root{
-  --bg:#f4f1ea; --card:#fffdf8; --text:#2f2d29; --muted:#7d776d;
-  --line:#ded7ca; --accent:#8a6d45; --accent2:#eee4d4;
-  --danger:#b45b49; --shadow:0 10px 30px rgba(55,45,25,.08);
+  --bg:#f4f1ea; --card:#fffdf8; --text:#2f2d29; --muted:#8a8479;
+  --line:#e3dccf; --accent:#8a6d45; --accent2:#f0e7d8;
+  --danger:#b45b49; --shadow:0 2px 10px rgba(55,45,25,.06);
 }
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);
+body{margin:0;background:var(--bg);color:var(--text);font-size:14px;
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR",sans-serif;}
-.wrap{width:min(980px,92%);margin:auto;padding:42px 0 60px}
-header{text-align:center;margin-bottom:32px}
-h1{margin:0 0 8px;font-size:clamp(30px,5vw,48px);letter-spacing:-1.8px}
-.today{color:var(--muted);font-size:14px}
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-bottom:22px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow)}
-.dday-card{padding:28px;position:relative;overflow:hidden}
-.dday-card:after{content:"";position:absolute;width:130px;height:130px;border-radius:50%;
-  right:-35px;top:-45px;background:var(--accent2)}
-.small{position:relative;color:var(--accent);font-size:13px;font-weight:800;letter-spacing:.4px}
-.event{position:relative;font-size:24px;font-weight:800;margin:9px 0 15px}
-.dday{position:relative;font-size:60px;font-weight:900;letter-spacing:-2px;line-height:1}
-.date{position:relative;color:var(--muted);font-size:14px;margin-top:11px}
-.section{padding:26px}
-.title-row{display:flex;justify-content:space-between;align-items:end;gap:10px;margin-bottom:17px}
-h2{margin:0;font-size:22px;letter-spacing:-.6px}
-.hint{font-size:12px;color:var(--muted)}
-.form{display:grid;grid-template-columns:180px 1fr auto;gap:9px;margin-bottom:16px}
-input{width:100%;padding:12px;border:1px solid var(--line);border-radius:11px;
-  background:#fff;color:var(--text);font-size:14px;outline:none}
+.wrap{width:min(860px,94%);margin:auto;padding:22px 0 36px}
+header{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:14px}
+h1{margin:0;font-size:22px;letter-spacing:-.8px}
+.today{color:var(--muted);font-size:11px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow)}
+
+/* D-day */
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:10px}
+.dday-card{padding:12px 14px;display:grid;grid-template-columns:1fr auto;
+  grid-template-areas:"small dday" "event dday" "date dday";align-items:center;column-gap:10px}
+.small{grid-area:small;color:var(--accent);font-size:10px;font-weight:800;letter-spacing:.4px}
+.event{grid-area:event;font-size:15px;font-weight:800;margin:1px 0}
+.date{grid-area:date;color:var(--muted);font-size:11px}
+.dday{grid-area:dday;font-size:30px;font-weight:900;letter-spacing:-1px;line-height:1;color:var(--accent)}
+
+/* 섹션 */
+.section{padding:14px;margin-bottom:22px}
+.title-row{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:10px}
+h2{margin:0;font-size:15px;letter-spacing:-.3px}
+h3{margin:0 0 6px;font-size:11px;color:var(--accent);letter-spacing:.3px}
+.hint{font-size:10px;color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* 곡 */
+.songs{display:flex;flex-direction:column;gap:5px}
+.song{display:grid;grid-template-columns:20px 1fr 46px 50px;gap:7px;align-items:center;
+  padding:6px 8px;border:1px solid var(--line);border-radius:9px;background:#fff}
+.song .no{width:20px;height:20px;border-radius:50%;background:var(--accent2);color:var(--accent);
+  font-size:10px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.song .name{font-weight:700;font-size:13px;line-height:1.25;min-width:0}
+.song .ref{display:block;margin-top:1px;font-size:10px;font-weight:600;color:var(--accent);text-decoration:none}
+.song .ref:hover{text-decoration:underline}
+.song label{display:flex;flex-direction:column;align-items:center;gap:1px;font-size:8px;color:var(--muted);font-weight:700;letter-spacing:.3px}
+.song .val{width:100%;padding:3px 0;font-size:12px;font-weight:700;text-align:center;
+  background:var(--accent2);border-radius:6px;color:var(--text);letter-spacing:0}
+
+/* 동영상 */
+.form{display:grid;grid-template-columns:140px 1fr auto;gap:6px;margin-bottom:8px}
+input{width:100%;padding:7px 9px;border:1px solid var(--line);border-radius:8px;
+  background:#fff;color:var(--text);font-size:12px;outline:none}
 input:focus{border-color:var(--accent)}
-button{border:0;border-radius:11px;padding:12px 16px;background:var(--accent);
-  color:white;font-weight:700;cursor:pointer}
+button{border:0;border-radius:8px;padding:7px 12px;background:var(--accent);
+  color:white;font-weight:700;font-size:12px;cursor:pointer}
 button:hover{filter:brightness(.96)}
-ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:9px}
-li{display:flex;align-items:center;gap:10px;padding:12px 13px;border:1px solid var(--line);
-  border-radius:12px;background:#fff}
+ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:5px}
+li{display:flex;align-items:center;gap:8px;padding:6px 9px;border:1px solid var(--line);
+  border-radius:9px;background:#fff}
 .link{flex:1;min-width:0}
-.link a{color:var(--text);text-decoration:none;font-weight:700}
+.link a{color:var(--text);text-decoration:none;font-weight:700;font-size:13px}
 .link a:hover{text-decoration:underline}
-.url{display:block;color:var(--muted);font-size:11px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.del{padding:7px 10px;background:#f3e4df;color:var(--danger);font-size:12px}
-.empty{color:var(--muted);text-align:center;padding:22px 0;font-size:14px}
-.note{margin-top:12px;color:var(--muted);font-size:12px;line-height:1.6}
-@media(max-width:700px){
-  .grid{grid-template-columns:1fr}
-  .form{grid-template-columns:1fr}
-  .dday{font-size:52px}
+.url{display:block;color:var(--muted);font-size:10px;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.del{padding:3px 8px;background:#f3e4df;color:var(--danger);font-size:10px}
+.empty{color:var(--muted);text-align:center;padding:10px 0;font-size:12px}
+.note{margin-top:8px;color:var(--muted);font-size:10px;line-height:1.5}
+
+@media(max-width:640px){
+  .two{grid-template-columns:1fr;gap:10px}
+  .form{grid-template-columns:1fr 1fr}
+  .form input:nth-child(2){grid-column:1 / 3}
+  .form button{grid-column:1 / 3}
+  .dday{font-size:26px}
+  .event{font-size:13px}
 }
 </style>
 </head>
@@ -61,7 +85,7 @@ li{display:flex;align-items:center;gap:10px;padding:12px 13px;border:1px solid v
 <div class="wrap">
   <header>
     <h1>My D-Day</h1>
-    <div class="today">기준일 · 2026-09-15 · 오늘부터 카운트</div>
+    <div class="today">기준일 2026-09-15</div>
   </header>
 
   <div class="grid">
@@ -82,9 +106,21 @@ li{display:flex;align-items:center;gap:10px;padding:12px 13px;border:1px solid v
 
   <section class="card section">
     <div class="title-row">
-      <h2>🎬 재밌게 본 동영상</h2>
-      <div class="hint">제목 + 링크를 저장하세요</div>
+      <h2>🎷 합주 우선순위 곡</h2>
+      <div class="hint">KEY · BPM</div>
     </div>
+
+    <div class="two">
+      <div>
+        <h3>🎤 보컬곡</h3>
+        <div class="songs" id="vocalSongs"></div>
+      </div>
+      <div>
+        <h3>🎺 합주곡</h3>
+        <div class="songs" id="bandSongs"></div>
+      </div>
+    </div>
+
 
     <form class="form" id="videoForm">
       <input id="videoTitle" type="text" placeholder="간략한 제목" maxlength="100" required>
@@ -93,8 +129,8 @@ li{display:flex;align-items:center;gap:10px;padding:12px 13px;border:1px solid v
     </form>
 
     <ul id="videoList"></ul>
-    <div id="empty" class="empty">아직 저장한 동영상이 없습니다.</div>
-    <div class="note">저장한 목록은 이 브라우저의 localStorage에 보관됩니다. 다른 PC나 브라우저와 자동 동기화되지는 않습니다.</div>
+    <div id="empty" class="empty">저장한 동영상이 없습니다.</div>
+    <div class="note">이 브라우저(localStorage)에만 저장됩니다.</div>
   </section>
 </div>
 
@@ -117,6 +153,82 @@ const target120 = new Date("2027-01-13T00:00:00");
 updateCountdown("d90", target90);
 updateCountdown("d120", target120);
 
+/* ---------- 합주 우선순위 곡 ---------- */
+// ★ Key / BPM / 레퍼런스 링크는 여기서 직접 수정하세요 (모두에게 동일하게 보입니다)
+// link는 지금 유튜브 검색 링크(임시) — 원하는 영상 주소로 바꾸세요. 비우면("") 링크가 숨겨집니다.
+const songs = {
+  vocal: [
+    { title: "How High the Moon",   key: "G",  bpm: "180",
+      link: "https://www.youtube.com/results?search_query=How%20High%20the%20Moon%20jazz%20vocal" },
+    { title: "Blue Moon",           key: "C",  bpm: "90",
+      link: "https://www.youtube.com/results?search_query=Blue%20Moon%20jazz%20vocal" },
+    { title: "Route 66",            key: "C",  bpm: "130",
+      link: "https://www.youtube.com/results?search_query=Route%2066%20jazz%20vocal" },
+    { title: "Lullaby of Birdland", key: "G",  bpm: "140",
+      link: "https://www.youtube.com/results?search_query=Lullaby%20of%20Birdland%20jazz%20vocal" }
+  ],
+  band: [
+    { title: "Blue Bossa",   key: "Cm", bpm: "140",
+      link: "https://www.youtube.com/results?search_query=Blue%20Bossa%20Joe%20Henderson" },
+    { title: "Bluesette",    key: "G",  bpm: "120",
+      link: "https://www.youtube.com/results?search_query=Bluesette%20Toots%20Thielemans" },
+    { title: "Blue Daniel",  key: "F",  bpm: "180",
+      link: "https://www.youtube.com/results?search_query=Blue%20Daniel%20Frank%20Rosolino" }
+  ]
+};
+
+function makeField(labelText, value) {
+  const label = document.createElement("label");
+  label.textContent = labelText;
+  const v = document.createElement("div");
+  v.className = "val";
+  v.textContent = value || "-";
+  label.appendChild(v);
+  return label;
+}
+
+function renderGroup(groupName, containerId) {
+  const box = document.getElementById(containerId);
+  box.innerHTML = "";
+  songs[groupName].forEach((song, i) => {
+    const row = document.createElement("div");
+    row.className = "song";
+
+    const no = document.createElement("div");
+    no.className = "no";
+    no.textContent = i + 1;
+
+    const name = document.createElement("div");
+    name.className = "name";
+    const t = document.createElement("span");
+    t.textContent = song.title;
+    name.appendChild(t);
+    if (song.link) {
+      const a = document.createElement("a");
+      a.className = "ref";
+      a.href = song.link;
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      a.textContent = "▶ 레퍼런스";
+      name.appendChild(a);
+    }
+
+    row.appendChild(no);
+    row.appendChild(name);
+    row.appendChild(makeField("KEY", song.key));
+    row.appendChild(makeField("TEMPO (BPM)", song.bpm));
+    box.appendChild(row);
+  });
+}
+
+function renderSongs() {
+  renderGroup("vocal", "vocalSongs");
+  renderGroup("band", "bandSongs");
+}
+
+renderSongs();
+
+/* ---------- 동영상 ---------- */
 const KEY = "my-dday-videos-v1";
 let videos = JSON.parse(localStorage.getItem(KEY) || "[]");
 
